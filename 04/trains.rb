@@ -1,17 +1,32 @@
 class Train
+  include Company
+  include InstanceCounter
+
   attr_accessor :wagons, :speed, :route, :station
   attr_reader  :name, :type
 
-  def initialize(name='unknown')
-    @name = name
-    @wagons = []
-    @station = nil
-    @route = nil
-    @speed = 0
-    @stations = []
-    @trains = []
-    @type = train_type
+  def self.find(number)#???????????????????????????????????????
+ #   @trains.each_with_index { |number, index| puts "#{number}" }
+ #   @trains.include?(number) puts number : puts nil
+    puts (number) if @trains.include?(number)
   end
+
+
+
+
+
+
+    def initialize(name='unknown')
+      @name = name
+      @wagons = []
+      @station = nil
+      @route = nil
+      @speed = 0
+      @stations = []
+      @trains = []
+      @type = train_type
+      @@instances += 1
+    end
 
   def gain_speed
     puts "Tooo-tooo!"

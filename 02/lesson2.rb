@@ -312,15 +312,6 @@
 #[:b, 2]
 #[:c, 3]
 #=> {:a#=>1, :b#=>2, :c#=>3}
-# :039 > hash.each do |key, value|
-      # :040 >     puts "#{key} = #{value}
-#a = 1
-#end
-#b = 2
-#end
-#c = 3
-#end
- #=> {:a#=>1, :b#=>2, :c#=>3}
 # :055 > hash.each do |key, value|
 # :056 >     puts "#{key} = #{value}"
 # :057?>   end

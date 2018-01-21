@@ -1,10 +1,13 @@
 class Route
   attr_reader :number
   attr_accessor :stations
+  include InstanceCounter
+
 
   def initialize(number)
     @number = number
     @stations = []
+    @@instances += 1
   end
 
   def stations_list

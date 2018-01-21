@@ -1,13 +1,78 @@
-class Car
+module FuelTank
+  def fill_tank(level)
+    self.fuel_tank = level
+  end
+
+  def fuel_level
+    self.fuel_tank
+  end
+
+  protected
+  attr_accessor :fuel_tank
+end
+
+module Debugger# == Debugger = Module.new do ... end
+  def self.included(base)
+    base.extend ClassMethods
+    base.send :include, InstanceMethods
+  end
+
+  module ClassMethods
+    def debug(log)
+    puts "!!!DEBUG: #{log}!!!"
+    end
+  end
+
+  module InstanceMethods
+    def debug(log)
+      self.class.debug(log)
+    end
+    def print_class
+      puts self.class
+    end
+  end
+end
+
+class Car # == Car = Class.new do ... end
+  include FuelTank
+  include Debugger
 
   attr_reader :current_rpm
 
+  #создать метод класса - объявить метод с помощью селф
+ # def self.description
+ # puts "Это родительский класс для всех авто."
+ # end
+  # или
+#  class << self
+#    def description
+#      puts "Это родительский класс для всех авто."
+#    end
+#  end
+
+ # def description
+ #   puts "Это экземплчр класса Car."
+#  end
     #  public
     # завести двигатель
 
+  @@instances = 0      #переменная класса
+
+  def self.instances
+    @@instances
+  end
+
+
+
+  debug 'Start interface'
+
   def initialize
     @current_rmp = 0
+    @@instances += 1
+    debug 'initialize'
   end
+
+
 
   def start_engine
     # запустить двигатель, если он не запущен
@@ -21,13 +86,16 @@ class Car
     current_rpm.zero? # или current_rpm == 0
   end
 
+  debug 'End interface'
+
   protected
 
   attr_writer :current_rpm
 
+
  # INITIAL_RPM = 700 # константа - большими буквами с подчеркиваниями
 
-  def iinitial_rpm
+  def initial_rpm
   700
   end
 
@@ -37,6 +105,59 @@ class Car
   end
 # остановить двигатель
 end
+
+class MotoBike
+  include FuelTank
+  include Debugger
+
+
+  debug 'MotoBike class'
+end
+
+car = Car.new
+bike = MotoBike.new
+car.fill_tank(50)
+car.fuel_level
+bike.fill_tank(20)
+bike.fuel_level
+car.print_class
+bike.print_class
+MotoBike.debug '123'
+
+Car.methods
+Car.public_methods
+Car.instance_methods
+car.methods
+car.class
+Car.class
+Class.methods
+Class.instance_methods
+MyClass = Class.new do
+  def m1
+    puts "m1"
+  end
+  def m2
+    puts "m2"
+  end
+end
+my = MyClass.new
+my.m1
+my.m2
+Class.class
+Car.superclass
+Class.superclass
+Module.class
+Module.superclass
+Module.private_instance_methods
+MyModule = Module.new do
+end
+o = Object.new
+o.class
+Object.class
+Object.superclass
+BasicObject.class
+BasicObject.superclass
+
 
 
 
@@ -93,3 +214,28 @@ car.start_engine!#приватный метод - если он после пр�
 #driver.drive(x)
 # x.current_rpm # ненайденный метод
 
+# методы класса -
+# Car.new, User.find(5), User.where(email: 'test@user.com')
+#
+#
+#
+# file modules.rb
+#пространство имен
+#module Admin
+#  class Car
+#    #реализация
+#  end
+#end
+
+class Admin::Car
+
+end
+
+Admin::Car.new
+admin_car = Admin::Car.new
+admin_car.class
+
+Math.class
+Math.sin(3)
+Math::PI
+Math.methods
