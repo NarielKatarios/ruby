@@ -5,16 +5,10 @@ class Train
   attr_accessor :wagons, :speed, :route, :station
   attr_reader  :name, :type
 
-  def self.find(number)#???????????????????????????????????????
- #   @trains.each_with_index { |number, index| puts "#{number}" }
- #   @trains.include?(number) puts number : puts nil
-    puts (number) if @trains.include?(number)
+  @@trains = []
+  def self.find(number)
+    @@trains.select{ |train| train.number  == number }.first
   end
-
-
-
-
-
 
     def initialize(name='unknown')
       @name = name
@@ -25,7 +19,8 @@ class Train
       @stations = []
       @trains = []
       @type = train_type
-      @@instances += 1
+      @@instances = register_instance
+      @@trains << self
     end
 
   def gain_speed

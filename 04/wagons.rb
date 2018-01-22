@@ -8,7 +8,7 @@ end
 class CargoWagon < Wagon
   def initialize
     @type = 'cargo'
-    @@instances += 1
+    @@instances = register_instance
   end
 end
 

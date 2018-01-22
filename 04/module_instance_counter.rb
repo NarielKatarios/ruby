@@ -16,8 +16,7 @@ module InstanceCounter
     private
 
     def register_instance
-      self.@@instances += 1
-      puts self.@@instances
+      self.class.instances += 1
     end
   end
 end
