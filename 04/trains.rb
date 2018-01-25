@@ -6,8 +6,8 @@ class Train
   attr_reader  :name, :type
 
   @@trains = []
-  def self.find(number)
-    @@trains.select{ |train| train.number  == number }.first
+  def self.find(name)
+    @@trains.select{ |train| train.name == name }.first
   end
 
     def initialize(name='unknown')

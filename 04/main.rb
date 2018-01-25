@@ -14,13 +14,38 @@
 #
  #   register_instance, который увеличивает счетчик кол-ва экземпляров класса
 # и который можно вызвать из конструктора. При этом, данный метод не должен быть публичным.
+---------------------------------------
+#Реализовать проверку (валидацию) данных для всех классов.
+# Проверять основные атрибуты (название, номер, тип и т.п.) на наличие, длину и т.п.
+# (в зависимости от атрибута):
+#    Валидация должна взываться при создании объекта, если объект невалидный,
+# то должно выбрасываться исключение
+#Должен быть метод valid? который возвращает true, если объект валидный
+# и false - в противном случае.
+#    Релизовать проверку на формат номера поезда.
+# Допустимый формат: три буквы или цифры в любом порядке,
+# необязательный дефис (может быть, а может нет) и еще 2 буквы или цифры после дефиса.
+# Релизовать интерфейс, который бы выводил пользователю ошибки валидации
+# без прекращения работы программы.
+# Убрать из классов все puts (кроме методов, которые и должны что-то выводить на экран)
+# , методы просто возвращают значения. (Начинаем бороться за чистоту кода).
+# UPDATE к заданию:
+#- Дополнительно сделать следующее:
+# при добавлениит вагонов к поезду и несовпадении типов также выбрасывать исключение.
+# - Для класса маршрута сделать валидацию на то,
+# что при добавлении станций объекты имеют тип (класс) RailwayStation
+# (или как он у вас называется).
+# - Добавить валидацию (с выбросом исключения)на глобальную уникальность номера поезда.
+# То есть, нельзя создать 2 объекта класса Train с одинаковым номером.
 
+
+require_relative 'module_company'
+require_relative 'module_instance_counter'
 require_relative 'trains'
 require_relative 'stations'
 require_relative 'routes'
 require_relative 'wagons'
-require_relative 'module_company'
-require_relative 'module_instance_counter'
+
 @stations = []
 
 @stations << RailwayStation.new('Москва')
@@ -87,3 +112,34 @@ while answer != 0
     puts 'Неверное значение.'
   end
 end
+
+train = Train.new
+train1 = Train.new
+station = RailwayStation.new
+c_wagon = CargoWagon.new
+c1_wagon = CargoWagon.new
+p_wagon = PassengerWagon.new
+route = Route.new
+train.company('ru')
+train.company
+c1_wagon.company('uk')
+c1_wagon.company
+p_wagon.company('ru')
+p_wagon.company
+RailwayStation.all
+RailwayStation.all.size
+Train.methods
+Train.instance_methods
+train = '13'
+train1 = '12'
+@@trains = []
+@@trains << Train.new('12')
+@@trains << Train.new('13')
+@@trains.find('12')
+@@trains.find('14')
+station.instances
+route.instances
+train.instances
+train2 = Train.new
+train.instances
+train.register_instance

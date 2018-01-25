@@ -9,6 +9,10 @@ module InstanceCounter
     def instances
       @@instances
     end
+
+    def instances=(inst)
+      @@instances=inst
+    end
   end
 
   module InstanceMethods

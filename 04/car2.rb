@@ -38,7 +38,8 @@ class Car # == Car = Class.new do ... end
   include Debugger
 
   attr_reader :current_rpm
-
+  attr_accessor :number
+  NUMBER_FORMAT =     /^[а-я]{1}\d{3}[а-я]{2}$/i
   #создать метод класса - объявить метод с помощью селф
  # def self.description
  # puts "Это родительский класс для всех авто."
@@ -62,17 +63,15 @@ class Car # == Car = Class.new do ... end
     @@instances
   end
 
-
-
   debug 'Start interface'
 
-  def initialize
+  def initialize (number)
     @current_rmp = 0
     @@instances += 1
     debug 'initialize'
+    @number = number
+    validate!
   end
-
-
 
   def start_engine
     # запустить двигатель, если он не запущен
@@ -86,12 +85,24 @@ class Car # == Car = Class.new do ... end
     current_rpm.zero? # или current_rpm == 0
   end
 
-  debug 'End interface'
+   debug 'End interface'
+
+  def valid?
+    validate!
+  rescue
+      false
+  end
 
   protected
 
   attr_writer :current_rpm
 
+  def validate!
+    raise "Number can`t be nil" if number.nil?
+    raise "Number should be at least 6 symbols" if number.length < 6
+    raise "Number has invalid format" if number !~ NUMBER_FORMAT
+    true
+  end
 
  # INITIAL_RPM = 700 # константа - большими буквами с подчеркиваниями
 
@@ -109,7 +120,6 @@ end
 class MotoBike
   include FuelTank
   include Debugger
-
 
   debug 'MotoBike class'
 end
@@ -239,3 +249,92 @@ Math.class
 Math.sin(3)
 Math::PI
 Math.methods
+
+# исключения
+#
+begin
+  puts 'Before exception'
+  1/0
+  puts 'After exception'
+rescue StandardError => e #Exception
+#    puts "Exception: #{e.inpect}" #весь объект
+#    puts "Exception: #{e.message}"#не весь
+#    puts e.backtrace.inspect #в скобках]
+#    puts e.backtrace
+puts "Error"
+    raise
+rescue NoMemoryError => e
+  puts "No Memory!!!"
+end
+
+puts 'After expection'
+--------------------------------
+def method_with_error
+  raise "oh no"
+end
+
+begin
+  method_with_error
+rescue RuntimeError => e #время выполнения  ошибки
+    puts e.inspect
+end
+
+puts 'After expection'
+--------------------------------
+def sqrt(value) #бегин не надо, если есть деф
+  sqrt = Math.sqrt(value)
+  puts sqrt
+rescue StandardError
+  puts "Неверное значение"
+end
+
+sqrt(-1)
+------------------------------
+
+def connect_to_wikipedia
+
+  raise "Connection error"
+end
+
+attempt = 0
+begin
+  connect_to_wikipedia
+ # puts "There was #{attempt} attempts"
+rescue RuntimeError
+  attempt += 1
+  puts "Check your internet connection"
+  retry if attempt < 3
+ # puts "There was #{attempt} attempts"
+  ensure
+  puts "There was #{attempt} attempts"
+
+end
+----------------------------------
+c = Car.new
+c.validate!
+c.number = '123'
+c.number = 123 #no
+c = Car.new('123')
+#шаблоны
+regexp = /.+/ # точка - любой символ, плюс - как минимум один символ
+regexp = /.*/ # 0 или 1 символ
+'' =~ regexp # проверка соответствия шаблона - нил, нет ни одного символа
+'a' =~ regexp #0 позиция вхождения
+regexp = /\d+.+\d*/ # \d - цифра , \d* - 0 и более цифр
+'a' =~ regexp #nil первая должна быть цифра
+
+
+regexp = /^[а-яА-Я]{1}\d{3}[а-яА-Я]{2}$/ # номер авто 1 буква рус алфавит 3 цифры и еще 2 буквы
+regexp = /^[а-я]{1}\d{3}[а-я]{2}$/i # i-не чувствителен к регистру
+'s343df' =~ regexp #nil
+'ы343пп' =~ regexp #0
+'ы343пп' !~ regexp #не совпадает - фолс
+
+Car.new('er345df')
+Car.new('ы343пп')
+c.valid? #true
+
+
+
+
+
