@@ -5,6 +5,8 @@ class Train
   attr_accessor :wagons, :speed, :route, :station
   attr_reader  :name, :type
 
+  NAME_FORMAT = /.[3]-*.[2]/i
+
   @@trains = []
   def self.find(name)
     @@trains.select{ |train| train.name == name }.first
@@ -21,6 +23,7 @@ class Train
       @type = train_type
       @@instances = register_instance
       @@trains << self
+      validate!
     end
 
   def gain_speed
@@ -64,7 +67,21 @@ class Train
     end
   end
 
+  def valid?
+    validate!
+  rescue
+    false
+  end
+
   private
+
+  def validate!
+    raise "Name can`t be nil" if name.nil?
+    raise "Name should be at least 7 symbols" if name.length < 7
+    raise "Name has invalid format" if name !~ NAME_FORMAT
+    raise "Type can`t be nil" if type.nil?
+    true
+  end
 
   def train_type
     ''
@@ -87,4 +104,24 @@ class CargoTrain < Train
   def train_type
     @type = 'cargo'
   end
+end
+
+
+def connect_to_wikipedia
+
+  raise "Connection error"
+end
+
+attempt = 0
+begin
+  connect_to_wikipedia
+    # puts "There was #{attempt} attempts"
+rescue RuntimeError
+  attempt += 1
+  puts "Check your internet connection"
+  retry if attempt < 3
+    # puts "There was #{attempt} attempts"
+ensure
+  puts "There was #{attempt} attempts"
+
 end

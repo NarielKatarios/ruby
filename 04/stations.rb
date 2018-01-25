@@ -3,6 +3,8 @@ class RailwayStation
   attr_accessor :trains
   include InstanceCounter
 
+  NAME_FORMAT = /^[A-Z]$/i
+
   @@stations = []
   def self.all
     @@stations.each do |station|
@@ -15,6 +17,7 @@ class RailwayStation
     @trains = []
     @@instances = register_instance
     @@stations << self
+    validate!
   end
 
   def trains_list
@@ -38,4 +41,20 @@ class RailwayStation
   def add_train(train)
     @trains << train
   end
+
+  def valid?
+    validate!
+  rescue
+    false
+  end
+
+  protected
+
+  def validate!
+    raise "Name can`t be nil" if name.nil?
+    raise "Name should be at least 6 symbols" if name.length < 6
+    raise "Name has invalid format" if name !~ NAME_FORMAT
+    true
+  end
+
 end

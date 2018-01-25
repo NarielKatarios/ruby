@@ -3,6 +3,23 @@ class Wagon
   include InstanceCounter
 
   attr_reader :type
+
+  def initialize
+    validate!
+  end
+
+  def valid?
+    validate!
+  rescue
+    false
+  end
+
+  protected
+
+  def validate!
+    raise "Type can`t be nil" if type.nil?
+    true
+  end
 end
 
 class CargoWagon < Wagon

@@ -39,7 +39,7 @@ class Car # == Car = Class.new do ... end
 
   attr_reader :current_rpm
   attr_accessor :number
-  NUMBER_FORMAT =     /^[а-я]{1}\d{3}[а-я]{2}$/i
+  NUMBER_FORMAT = /^[а-я]{1}\d{3}[а-я]{2}$/i
   #создать метод класса - объявить метод с помощью селф
  # def self.description
  # puts "Это родительский класс для всех авто."

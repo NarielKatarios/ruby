@@ -18,7 +18,7 @@ sudo apt-get install bundler mc fish
 выполни в терминале в своей папке
 cd ruby
 git add .
-    git commit -m 'задание 3'
+    git commit -m 'задание 6'
 git push
 (или git push origin master если не получится)
 ПЕРВОЕ ПОЛУЧИЛОСЬ
