@@ -334,7 +334,20 @@ Car.new('er345df')
 Car.new('ы343пп')
 c.valid? #true
 
+#dpro, [26.01.18 18:24]
+#у класс Train и Wagon разве есть методы класса type?
+#если ты пишешь так Train.type?
+#то у тебя в классе трейн должен быть метод self.type?
 
 
 
+a = [1, 2, 3]
+b = [1, 2, 3, 2]
+if a.uniq != nil puts "error a"
+elsif b.uniq != nil puts "error b"
+else puts "no error"
+end
+
+raise "Name can`t be the same in a" if a.uniq != nil
+raise "Name can`t be the same in b" if b.uniq != nil
 

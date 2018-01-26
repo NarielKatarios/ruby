@@ -18,6 +18,7 @@ class RailwayStation
     @@instances = register_instance
     @@stations << self
     validate!
+    raise "Error!"
   end
 
   def trains_list
@@ -47,6 +48,14 @@ class RailwayStation
   rescue
     false
   end
+
+  begin
+    initialize
+  rescue StandardError => e
+    puts e.inspect
+  end
+
+  puts 'After error'
 
   protected
 

@@ -6,6 +6,7 @@ class Wagon
 
   def initialize
     validate!
+    raise "Error!"
   end
 
   def valid?
@@ -13,6 +14,14 @@ class Wagon
   rescue
     false
   end
+
+  begin
+    initialize
+  rescue StandardError => e
+    puts e.inspect
+  end
+
+  puts 'After error'
 
   protected
 

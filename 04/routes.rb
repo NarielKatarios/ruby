@@ -10,6 +10,7 @@ class Route
     @stations = []
     @@instances = register_instance
     validate!
+    raise "Error!"
   end
 
   def stations_list
@@ -27,6 +28,7 @@ class Route
   def add_station(station)
     puts "В маршрут #{@number} включена станция #{station.name}."
     @stations << station
+    raise "This station is not Railway Station" if station.class != RailwayStation
   end
 
   def valid?
@@ -34,6 +36,15 @@ class Route
   rescue
     false
   end
+
+  begin
+    initialize
+    add_station
+  rescue StandardError => e
+    puts e.inspect
+  end
+
+  puts 'After error'
 
   protected
 

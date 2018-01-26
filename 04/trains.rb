@@ -24,6 +24,7 @@ class Train
       @@instances = register_instance
       @@trains << self
       validate!
+      raise "Error!"
     end
 
   def gain_speed
@@ -57,6 +58,7 @@ class Train
 
   def add_wagon(wagon)
     @speed == 0 ? @wagons.push(wagon) : puts("Stop first!")
+    raise "Type can`t be another" if wagon.type != @type? #if @type.Train != @type.Wagon? #???? if Train.type != Wagon.type?
   end
 
   def remove_wagon
@@ -73,6 +75,15 @@ class Train
     false
   end
 
+  begin
+    initialize
+    add_wagon
+  rescue StandardError => e
+    puts e.inspect
+  end
+
+  puts 'After error'
+
   private
 
   def validate!
@@ -80,6 +91,10 @@ class Train
     raise "Name should be at least 7 symbols" if name.length < 7
     raise "Name has invalid format" if name !~ NAME_FORMAT
     raise "Type can`t be nil" if type.nil?
+    raise "Name can`t be the same" unless @trains.select { |train| train.name == name }.empty?
+#raise "" unless @trains.any? { |train| train.name == name }
+# raise "" unless @trains.all? { |train| train.name != name }
+# raise "" unless @trains.select { |train| train.name == name }.empty?
     true
   end
 
@@ -104,24 +119,4 @@ class CargoTrain < Train
   def train_type
     @type = 'cargo'
   end
-end
-
-
-def connect_to_wikipedia
-
-  raise "Connection error"
-end
-
-attempt = 0
-begin
-  connect_to_wikipedia
-    # puts "There was #{attempt} attempts"
-rescue RuntimeError
-  attempt += 1
-  puts "Check your internet connection"
-  retry if attempt < 3
-    # puts "There was #{attempt} attempts"
-ensure
-  puts "There was #{attempt} attempts"
-
 end
