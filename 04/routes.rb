@@ -3,32 +3,36 @@ class Route
   attr_accessor :stations
   include InstanceCounter
 
-  NUMBER_FORMAT = /\d[3]/
+  NUMBER_FORMAT = /\d{3}/
+
+  @@routes = []
+  def self.find(number)
+    @@routes.select{ |route| route.number == number }.first
+  end
+
+  def self.all
+    @@routes
+  end
 
   def initialize(number)
     @number = number
     @stations = []
     @@instances = register_instance
     validate!
-    raise "Error!"
+    @@routes << self
   end
 
   def stations_list
-    puts "В маршруте #{@stations.size} станций: #{@stations}."
-    @stations.each do  |st|
-      puts "Station: #{st.name}."
-    end
+    @stations.map { |st| "Station: #{st.name}." }
   end
 
   def remove_station(station)
-    puts "Из маршрута #{@number} исключается станция #{station.name}."
     @stations.delete(station) if @stations.include?(station)
   end
 
   def add_station(station)
-    puts "В маршрут #{@number} включена станция #{station.name}."
-    @stations << station
     raise "This station is not Railway Station" if station.class != RailwayStation
+    @stations << station
   end
 
   def valid?
@@ -37,21 +41,12 @@ class Route
     false
   end
 
-  begin
-    initialize
-    add_station
-  rescue StandardError => e
-    puts e.inspect
-  end
-
-  puts 'After error'
-
   protected
 
   def validate!
-    raise "Number can`t be nil" if number.nil?
-    raise "Number should be at least 3 symbols" if number.length < 3
-    raise "Number has invalid format" if number !~ NUMBER_FORMAT
+    raise "Number can`t be nil" if @number.nil?
+    raise "Number should be at least 3 symbols" if @number.length < 3
+    raise "Number has invalid format" if @number !~ NUMBER_FORMAT
     true
   end
 end

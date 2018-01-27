@@ -1,30 +1,3 @@
-#Реализовать проверку (валидацию) данных для всех классов.
-# Проверять основные атрибуты (название, номер, тип и т.п.) на наличие, длину и т.п.
-# (в зависимости от атрибута):
-#    Валидация должна взываться при создании объекта, если объект невалидный,
-# то должно выбрасываться исключение
-#Должен быть метод valid? который возвращает true, если объект валидный
-# и false - в противном случае.
-# Релизовать проверку на формат номера поезда.
-# Допустимый формат: три буквы или цифры в любом порядке, /.[3]-*.[2]/i
-# необязательный дефис (может быть, а может нет) и еще 2 буквы или цифры после дефиса.
-# Релизовать интерфейс, который бы выводил пользователю ошибки валидации
-# без прекращения работы программы.
-#
-# Убрать из классов все puts (кроме методов, которые и должны что-то выводить на экран)
-# , методы просто возвращают значения. (Начинаем бороться за чистоту кода). - ???????????????????????
-#
-# UPDATE к заданию:
-#- Дополнительно сделать следующее:
-# при добавлениит вагонов к поезду и несовпадении типов также выбрасывать исключение.
-#- Для класса маршрута сделать валидацию на то,
-# что при добавлении станций объекты имеют тип (класс) RailwayStation
-# (или как он у вас называется).
-#
-# - Добавить валидацию (с выбросом исключения)на глобальную уникальность номера поезда.
-# То есть, нельзя создать 2 объекта класса Train с одинаковым номером.
-
-
 require_relative 'module_company'
 require_relative 'module_instance_counter'
 require_relative 'trains'
@@ -32,21 +5,13 @@ require_relative 'stations'
 require_relative 'routes'
 require_relative 'wagons'
 
-@stations = []
-
-@stations << RailwayStation.new('Москва')
-@stations << RailwayStation.new('Симферополь')
-@stations << RailwayStation.new('Ростов-на-Дону')
-@stations << RailwayStation.new('Керчb')
-@stations << RailwayStation.new('Севастополь')
-@stations << RailwayStation.new('Сочи')
-@trains = []
+RailwayStation.new('Москва')
+RailwayStation.new('Симферополь')
+RailwayStation.new('Ростов-на-Дону')
+RailwayStation.new('Керчb')
+RailwayStation.new('Севастополь')
+RailwayStation.new('Сочи')
 answer = ''
-
-def find_train
-  @trains.each_with_index { |train, index| puts "#{index+1} - #{train.name}" }
-  @trains[gets.to_i-1]
-end
 
 while answer != 0
   puts '-------------------------------------'
@@ -55,6 +20,9 @@ while answer != 0
   puts '3 - Отцепить вагон от поезда'
   puts '4 - Поместить поезд на станцию'
   puts '5 - Список станций и поездов на станции'
+  puts '6 - create Route'
+  puts '7 - add station to Route'
+  puts '8 - remove station from Route'
   puts '0 - exit'
   answer = gets.to_i
   if answer == 1
@@ -64,17 +32,21 @@ while answer != 0
     puts 'input train name'
     name = gets.chomp
     if answer2 == 1
-      @trains << PassengerTrain.new(name)
+      PassengerTrain.new(name)
     elsif answer2 == 2
-      @trains << CargoTrain.new(name)
+      CargoTrain.new(name)
     end
   elsif answer == 2
     puts 'Введите номер поезда, к которому добавить вагон'
-    train = find_train
-    if train.type == 'passenger'
+    Train.all.each { |tr| puts tr.name }
+    number = gets.chomp
+    train = Train.find(number)
+    if train && train.type == 'passenger'
       train.add_wagon(PassengerWagon.new)
-    elsif train.type == 'cargo'
+    elsif train && train.type == 'cargo'
       train.add_wagon(CargoWagon.new)
+    else
+      puts "Train with number #{number} not found"
     end
   elsif answer == 3
     puts 'Введите номер поезда, от которого отцепить вагон'
@@ -94,6 +66,18 @@ while answer != 0
       puts "#{index+1} - #{station.name}"
       puts station.trains_list
     end
+  elsif answer == 6
+    puts 'Введите номер маршрута, который хотите создать'
+    @number = gets.chomp
+  elsif answer == 7
+    puts 'Введите номер маршрута, чтобы добавить в него станцию.'
+  Route.all.each { |rou| puts rou.name }
+  number = gets.chomp
+  @route = Route.find(number)
+  elsif answer == 8
+    puts 'Введите номер маршрута, чтобы удалить из него станцию.'
+  @route = find_route
+  @route.remove_station
   else
     puts 'Неверное значение.'
   end
