@@ -5,9 +5,7 @@ class RailwayStation
 
   @@stations = []
   def self.all
-    @@stations.map do |station|
-      station.name
-    end
+    @@stations
   end
 
   def initialize(name)
@@ -16,6 +14,10 @@ class RailwayStation
     @@instances = register_instance
     validate!
     @@stations << self
+  end
+
+  def do_with_trains(&block)
+    @trains.each { |n| block.call(n) }
   end
 
   def trains_list

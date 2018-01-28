@@ -138,6 +138,8 @@ m[0] - 1 - первый объект в массиве
  3.times do
    puts 'hello'
  end
+ 3.times do |i| puts i end
+ 3.times {|i| puts i}
 МЕТОД JOIN - разделяет строковые объекты массива чем-нибудь
  m.to_s - 1234
  m.join('! ') - 1! 2! 3! 4
@@ -155,21 +157,127 @@ m[0] - 1 - первый объект в массиве
 
 
 ------------------------------------------------------------
+БЛОКИ
+ 3.times {|i| puts i}
+0
+ 1
+ 2
+def m(i)
+  puts i
+end
 
+ for i in 1..3
+   m(i)
+ end
+ 1
+ 2
+ 3
 
+ h = {a: 1, b: 2, c: 3}
+ h.each do |value|
+   puts value.inspect
+ end
+a
+ b
+[:c=>3]
+ h.each do |key, value|
+puts "#{key} => #{value}"
+a
+b
+c => 3
+[1,2,3,4].each { |i| puts i * 10}
+10
+20
+30
+40
 
+line_num = 0
+file.open('blocks.rb').each do |line|
+  puts "#{line_num += 1}: #{line}"
+end
+1: - все строки файла
+2:
 
+сохранить блок в переменную - создание объекта класса Прок
+a = Proc.new {|x| x = x * 10; puts x}
+b = proc {|x| x = x * 10; puts x}
+c = lambda {|x| x = x * 10; puts x} лямда контроллирует количество аргументов
+вызов блока
+a.call(100)
+1000
 
+x = "hello"
+block = Proc.new {puts x}
+block.call
+hello
+def m(block)
+  x = "goodbye"
+  puts "X from method: #{x}"
+  block.call
+end
+m(block)
+X from method: goodbye
+hello
 
+вызвать переданный блок МЕТОД YIELD
+def m
+  puts "Before block"
+yield
+  puts "After block"
+end
+m {puts "Inside block"}
+Before block
+Inside block
+After block
 
+ДАННЫЕ В БЛОК - неименованый
+def caps(str)
+  str.capitalize! #!изменяется строка с заглавной буквы
+  yield(str)
+end
+caps('abc')  {|str| puts str[0]}
+A
+caps('abc')  {|str| puts str}
+Abc
 
+ПЕРЕДАЧА БЛОКА КАК ИМЕНОВАНОГО АРГУМЕНТА
+def caps(str, block)
+  str.capitalize!
+  block.call(str)
+end
+block = lambda {|x| puts x}
+caps 'abc', block
+Abc
 
+ЕЩЕ ОДИН СПОСОБ ЗАДАНИЯ АРГУМЕНТА БЛОКА КАК АРГУМЕНТА МЕТОДА
+def caps(str, &block) - #последний аргумент c & должен быть передан в блок
+str.capitalize!
+block.call(str)
+end
+caps('abc') {|x| puts x}
+Abc
 
+def caps(str, &block)
+str.capitalize!
+block.call(str).
+                   yield(str)
+end
+caps('abc') {|x| puts x}
+Abc
+Abc
 
+ПЕРЕДАН БЛОК ИЛИ НЕТ
+def m(str, &block)
+if block_given?
+  yield(str)
+else
+  puts str
+  end
+m('abc')
 
+m('abc') {|x| x; capitalize!; puts x}
 
-
-
+Abc
 
 
 

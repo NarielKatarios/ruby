@@ -33,6 +33,10 @@ class Train
     @@trains << self
   end
 
+  def do_with_wagons (&block)
+    @wagons.each { |n| block.call(n) }
+  end
+
   def gain_speed
     puts "Tooo-tooo!"
     @speed = 100

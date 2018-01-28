@@ -1,3 +1,15 @@
+# dpro, [27.01.18 20:46]
+# # Примечание:
+# В Ruby есть еще один способ записи блоков через lambda, это оператор ->:
+# Запись ->(x) { puts x } это то же самое, что и lambda { |x| puts x }, только короче.
+# Если встретите такую запись, не пугайтесь, это всего лишь lambda.
+# Задание:
+# # У класса RailwayStation написать метод,
+# который принимает блок и выполняет действия из блока над каждым поездом (Train),
+# находящимся в данный момент на станции.
+# У класса Train написать метод, который принимает блок
+# и проходит по всем вагонам поезда, передавая каждый объект вагона в блок.
+
 require_relative 'module_company'
 require_relative 'module_instance_counter'
 require_relative 'trains'
@@ -50,22 +62,31 @@ while answer != 0
     end
   elsif answer == 3
     puts 'Введите номер поезда, от которого отцепить вагон'
-    train = find_train
+    Train.all.each { |tr| puts tr.name }
+    number = gets.chomp
+    train = Train.find(number)
     train.remove_wagon
   elsif answer == 4
     puts 'Введите номер поезда, который хотите поместить на станцию.'
-    train = find_train
+    Train.all.each { |tr| puts tr.name }
+    number = gets.chomp
+    train = Train.find(number)
     puts 'Введите номер станции.'
-    @stations.each_with_index { |station, index| puts "#{index+1} - #{station.name}" }
+    RailwayStation.all.each_with_index { |station, index| puts "#{index+1} - #{station.name}" }
     station_index = gets.to_i-1
-    station = @stations[station_index]
+    station = RailwayStation.all[station_index]
     train.station = station
     station.add_train(train)
   elsif answer == 5
-    @stations.each_with_index do |station, index|
+    RailwayStation.all.each_with_index do |station, index|
       puts "#{index+1} - #{station.name}"
       puts station.trains_list
+      station.do_with_trains do |train|
+        puts train.name
+        train.do_with_wagons { |wagon| puts wagon.type }
+      end
     end
+
   elsif answer == 6
     puts 'Введите номер маршрута, который хотите создать'
     @number = gets.chomp
