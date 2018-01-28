@@ -76,13 +76,13 @@ class Car # == Car = Class.new do ... end
   def start_engine
     # запустить двигатель, если он не запущен
     star_engine! if engine_stopped
- # set('rpm', 700) if rpm == 0 - обороты в секунду
+ # set('rpm', 700) if rpm.zero? - обороты в секунду
  # current_rpm - текущие обороты
   end
 
   def engine_stopped?
     #true, если обороты на нуле
-    current_rpm.zero? # или current_rpm == 0
+    current_rpm.zero? # или current_rpm.zero?
   end
 
    debug 'End interface'
@@ -343,10 +343,12 @@ c.valid? #true
 
 a = [1, 2, 3]
 b = [1, 2, 3, 2]
-if a.uniq != nil puts "error a"
-elsif b.uniq != nil puts "error b"
-else puts "no error"
-end
+  if a.uniq != nil
+    puts "error a"
+  elsif b.uniq != nil
+    puts "error b"
+    else puts "no error"
+  end
 
 raise "Name can`t be the same in a" if a.uniq != nil
 raise "Name can`t be the same in b" if b.uniq != nil

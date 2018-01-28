@@ -1,14 +1,9 @@
-# dpro, [27.01.18 20:46]
-# # Примечание:
-# В Ruby есть еще один способ записи блоков через lambda, это оператор ->:
-# Запись ->(x) { puts x } это то же самое, что и lambda { |x| puts x }, только короче.
-# Если встретите такую запись, не пугайтесь, это всего лишь lambda.
-# Задание:
-# # У класса RailwayStation написать метод,
-# который принимает блок и выполняет действия из блока над каждым поездом (Train),
-# находящимся в данный момент на станции.
-# У класса Train написать метод, который принимает блок
-# и проходит по всем вагонам поезда, передавая каждый объект вагона в блок.
+# 1 - Изучить https://github.com/arbox/ruby-style-guide/blob/master/README-ruRU.md
+# 2 - Посмотреть мастер-класс "Почему код должен быть стильным"
+# 3 - Установить rubocop и проанализировать свои проект с его помощью
+# 4 - Исправить все ошибки (кроме отсутствия документации), которые выдаст rubocop.
+# То, что он не сможет исправить в автоматическом режиме, исправить вручную.
+# Залить исправленные версии на гитхаб.
 
 require_relative 'module_company'
 require_relative 'module_instance_counter'
@@ -72,17 +67,17 @@ while answer != 0
     number = gets.chomp
     train = Train.find(number)
     puts 'Введите номер станции.'
-    RailwayStation.all.each_with_index { |station, index| puts "#{index+1} - #{station.name}" }
-    station_index = gets.to_i-1
+    RailwayStation.all.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
+    station_index = gets.to_i - 1
     station = RailwayStation.all[station_index]
     train.station = station
     station.add_train(train)
   elsif answer == 5
-    RailwayStation.all.each_with_index do |station, index|
-      puts "#{index+1} - #{station.name}"
+    RailwayStation.all.each_with_index do |st, index|
+      puts "#{index + 1} - #{st.name}"
       puts station.trains_list
-      station.do_with_trains do |train|
-        puts train.name
+      station.do_with_trains do |tr|
+        puts tr.name
         train.do_with_wagons { |wagon| puts wagon.type }
       end
     end
@@ -92,22 +87,20 @@ while answer != 0
     @number = gets.chomp
   elsif answer == 7
     puts 'Введите номер маршрута, чтобы добавить в него станцию.'
-  Route.all.each { |rou| puts rou.name }
-  number = gets.chomp
-  @route = Route.find(number)
+    Route.all.each { |rou| puts rou.name }
+    number = gets.chomp
+    @route = Route.find(number)
   elsif answer == 8
     puts 'Введите номер маршрута, чтобы удалить из него станцию.'
-  @route = find_route
-  @route.remove_station
+    @route = find_route
+    @route.remove_station
   else
     puts 'Неверное значение.'
   end
 end
 
 train = Train.new
-train1 = Train.new
 station = RailwayStation.new
-c_wagon = CargoWagon.new
 c1_wagon = CargoWagon.new
 p_wagon = PassengerWagon.new
 route = Route.new
@@ -122,15 +115,13 @@ RailwayStation.all.size
 Train.methods
 Train.instance_methods
 train = '13'
-train1 = '12'
-@@trains = []
-@@trains << Train.new('12')
-@@trains << Train.new('13')
-@@trains.find('12')
-@@trains.find('14')
+@trains = []
+@trains << Train.new('12')
+@trains << Train.new('13')
+@trains.find('12')
+@trains.find('14')
 station.instances
 route.instances
 train.instances
-train2 = Train.new
 train.instances
 train.register_instance

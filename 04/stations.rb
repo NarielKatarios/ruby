@@ -3,25 +3,25 @@ class RailwayStation
   attr_accessor :trains
   include InstanceCounter
 
-  @@stations = []
+  @stations = []
   def self.all
-    @@stations
+    @stations
   end
 
   def initialize(name)
     @name = name
     @trains = []
-    @@instances = register_instance
+    @instances = register_instance
     validate!
-    @@stations << self
+    @stations << self
   end
 
-  def do_with_trains(&block)
-    @trains.each { |n| block.call(n) }
+  def do_with_trains
+    @trains.each { |n| yield(n) }
   end
 
   def trains_list
-    @trains.map do  |train|
+    @trains.map do |train|
       "Train: #{train.name} - #{train.wagons.size} wagons, type: #{train.type}"
     end
   end
@@ -42,15 +42,15 @@ class RailwayStation
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
 
   protected
 
   def validate!
-    raise "Name can`t be nil" if @name.nil?
-    raise "Name should be at least 3 symbols" if @name.length < 3
+    raise 'Name can`t be nil' if @name.nil?
+    raise 'Name should be at least 3 symbols' if @name.length < 3
     true
   end
 end

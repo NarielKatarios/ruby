@@ -1,9 +1,10 @@
 class SportCar < Car
   def start_engine
-    puts "Click!!"
+    puts 'Click!!'
     super
-    puts "Wroom!!"
+    puts 'Wroom!!'
   end
+
   protected
 
   def iinitial_rpm
@@ -12,6 +13,6 @@ class SportCar < Car
 end
 
 sport_car = SportCar.new
-#sport_car.load
+# sport_car.load
 sport_car.start_engine
 sport_car.current_rpm

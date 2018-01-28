@@ -3,42 +3,37 @@ class Train
   include InstanceCounter
 
   attr_accessor :wagons, :speed, :route, :station
-  attr_reader  :name, :type
+  attr_reader :name, :type
 
   NAME_FORMAT = /^[\w]{3}-*[\w]{2}$/i
 
-  @@trains = []
+  @trains = []
   def self.find(name)
-    @@trains.select{ |train| train.name == name }.first
+    @trains.select { |train| train.name == name }.first
   end
 
   def self.all
-    @@trains
+    @trains
   end
 
-  def initialize(name='unknown')
+  def initialize(name = 'unknown')
     @name = name
-    @wagons = []
-    @station = nil
-    @route = nil
-    @speed = 0
-    @stations = []
-    @type = train_type
-    @@instances = register_instance
+    set_default_variables
+    @instances = register_instance
     begin
       validate!
-    rescue Exception => e
-      puts "Ошибка: " + e.message
+    rescue StandardError => e
+      puts 'Ошибка: ' + e.message
     end
-    @@trains << self
+    @trains << self
   end
 
-  def do_with_wagons (&block)
-    @wagons.each { |n| block.call(n) }
+  def do_with_wagons
+    @wagons.each { |n| yield(n) }
   end
 
   def gain_speed
-    puts "Tooo-tooo!"
+    puts 'Tooo-tooo!'
     @speed = 100
   end
 
@@ -46,9 +41,9 @@ class Train
     st = @route.stations.find { |station| station == @station }
     index = @route.stations.index(st)
     if index <= (@route.stations.size - 1 - 1)
-      @route.stations[find_station_index+1].name
+      @route.stations[find_station_index + 1].name
     else
-      "End station"
+      'End station'
     end
   end
 
@@ -62,32 +57,41 @@ class Train
   end
 
   def add_wagon(wagon)
-    raise "wrong type" if wagon.type != @type
-    @speed == 0 ? @wagons.push(wagon) : puts("Stop first!")
+    raise 'wrong type' if wagon.type != @type
+    @speed.zero? ? @wagons.push(wagon) : puts('Stop first!')
   end
 
   def remove_wagon
-    if @wagons.size == 0
-      "No wagons."
+    if @wagons.empty?
+      'No wagons.'
     else
-      @speed == 0 ? @wagons.delete(@wagons.last) : "Stop first!"
+      @speed.zero? ? @wagons.delete(@wagons.last) : 'Stop first!'
     end
   end
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
 
   private
 
+  def set_default_variables
+    @wagons = []
+    @station = nil
+    @route = nil
+    @speed = 0
+    @stations = []
+    @type = train_type
+  end
+
   def validate!
-    raise "Name can`t be nil" if @name.nil?
-    raise "Name should be at least 5 symbols" if @name.length < 5
-    raise "Name has invalid format" if @name !~ NAME_FORMAT
-    raise "Type can`t be nil" if @type.nil?
-    raise "Name can`t be the same" if @@trains.any? { |train| train.name == @name }
+    raise 'Name can`t be nil' if @name.nil?
+    raise 'Name should be at least 5 symbols' if @name.length < 5
+    raise 'Name has invalid format' if @name !~ NAME_FORMAT
+    raise 'Type can`t be nil' if @type.nil?
+    raise 'Name can`t be the same' if @trains.any? { |train| train.name == @name }
     true
   end
 
@@ -97,7 +101,6 @@ class Train
 end
 
 class PassengerTrain < Train
-
   private
 
   def train_type
@@ -106,7 +109,6 @@ class PassengerTrain < Train
 end
 
 class CargoTrain < Train
-
   private
 
   def train_type

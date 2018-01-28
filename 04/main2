@@ -10,11 +10,9 @@ car = Car.new
 car.start_engine
 puts "Sport Car RPM: #{car.current_rpm}."
 
-
 sport_car = SportCar.new
 sport_car.start_engine
 puts "Sport Car RPM: #{sport_car.current_rpm}."
-
 
 # ruby main.rb
 #

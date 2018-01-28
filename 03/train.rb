@@ -1,6 +1,8 @@
 #-------------------------------------------------------
-# С этого занятия мы будем создавать прилоежение, которое поможет диспетчеру железнодорожной странции управлять поездами:
-# принимать, отправлять, показывать информацию и т.д. (точнее, мы будем создавать его объектную модель).
+# С этого занятия мы будем создавать прилоежение, которое поможет диспетчеру железнодорожной
+# странции управлять поездами:
+# принимать, отправлять, показывать информацию и т.д. (точнее, мы будем создавать его объектную
+# модель).
 # Нужно написать:
 # *: Классы Train и RailwayStation, Route для поезда, ж.д. станции и маршрута соответственно.
 #-------------------------------------------------------
@@ -23,8 +25,10 @@
 # *: набирать скорость
 # *: показывать текущую скорость
 # *: тормозить
+#
 # *: показывать количество вагонов
-# *: прицеплять/отцеплять вагоны (по одному вагону за операцию, метод просто увеличивает или уменьшает количество вагонов).
+# *: прицеплять/отцеплять вагоны (по одному вагону за операцию, метод просто увеличивает
+# или уменьшает количество вагонов).
 # Прицепка/отцепка вагонов может осуществляться только если поезд не движется.
 # *: Принимать маршрут следования
 # *: Перемещаться между станциями, указанными в маршруте.
@@ -35,7 +39,7 @@ class Train
   attr_accessor :wagons, :speed, :route, :station
   attr_reader :type, :name
 
-  def initialize(name='unknown', type='cargo', wagons=0)
+  def initialize(name = 'unknown', type = 'cargo', wagons = 0)
     @name = name
     @type = type
     @wagons = wagons
@@ -47,7 +51,7 @@ class Train
   end
 
   def gain_speed
-    puts "Tooo-tooo!"
+    puts 'Tooo-tooo!'
     @speed = 100
   end
 
@@ -55,9 +59,9 @@ class Train
     st = @route.stations.find { |station| station == @station }
     index = @route.stations.index(st)
     if index <= (@route.stations.size - 1 - 1)
-      puts " Current station: #{@station}. Next station: #{@route.stations[find_station_index+1].name}"
+      puts " Current station: #{@station}. Next station: #{@route.stations[find_station_index + 1].name}"
     else
-      puts "End station"
+      puts 'End station'
     end
   end
 
@@ -76,14 +80,14 @@ class Train
   end
 
   def add_wagon
-    @speed == 0 ? @wagons += 1 : puts("Stop first!")
+    @speed.zero? ? @wagons += 1 : puts('Stop first!')
   end
 
   def remove_wagon
-    if @wagons == 0
-      puts("No wagons.")
+    if @wagons.zero?
+      puts('No wagons.')
     else
-      @speed == 0 ? @wagons -= 1 : puts("Stop first!")
+      @speed.zero? ? @wagons -= 1 : puts('Stop first!')
     end
   end
 end
@@ -127,7 +131,7 @@ class Route
 
   def stations_list
     puts "В маршруте #{@stations.size} станций: #{@stations}."
-    @stations.each do  |st|
+    @stations.each do |st|
       puts "Station: #{st.name}."
     end
   end
@@ -154,12 +158,12 @@ route1 = Route.new(101) # создаем новый маршрут с номер
 route1.stations << station1 # добавляем в него станции ['Москва', 'Керч', 'Симферополь', 'Севастополь']
 route1.stations << station4
 route1.stations << station2
-route1.add_station(station5)                                  # почему там . траинс?????????????? мож, стэйшнз??
+route1.add_station(station5) # почему там . траинс?????????????? мож, стэйшнз??
 route1.stations << station6 # нечаянно добавили сюда Сочи
-puts "====================1"
+puts '====================1'
 route1.stations_list # выводим список станций                 # стэйшнз???? без лист
 route1.remove_station(station6) # удаляем сочи
-puts "====================2"
+puts '====================2'
 route1.stations_list # выводим список станций                 # стэйшнз???? без лист
 
 route2 = Route.new(115) # создаем маршрут №115 ['Москва', 'Ростов-на-Дону']
@@ -175,7 +179,7 @@ train1.type # тип
 train1.wagons # количество вагонов
 train1.route = route1 # маршрут
 train1.speed # текущую скорость
-train1.station = station1# станцию на которой он находится
+train1.station = station1 # станцию на которой он находится
 
 station1.trains << train1
 station1.trains << train2

@@ -5,21 +5,21 @@ class Wagon
   attr_reader :type
 
   def initialize
-    @@instances = register_instance
+    @instances = register_instance
     validate!
-    @@wagons << self
+    @wagons << self
   end
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
 
   protected
 
   def validate!
-    raise "Type can`t be nil" if @type.nil?
+    raise 'Type can`t be nil' if @type.nil?
     true
   end
 end

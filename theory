@@ -23,6 +23,13 @@ git push
 (или git push origin master если не получится)
 ПЕРВОЕ ПОЛУЧИЛОСЬ
 -------------------------------------------------
+установка РУБОКОПА
+gem install rubocop
+проверить рубокопом все файлы на ошибки
+rubocop ./
+автоматическое исправление ошибок
+rubocop -a ./
+--------------------------------------------------
 как файл в терминале открыть
 прям из корневой папки
 ruby ruby/04/main.rb
@@ -274,16 +281,226 @@ else
   puts str
   end
 m('abc')
-
 m('abc') {|x| x; capitalize!; puts x}
-
 Abc
+-------------------------
+ИДИОМЫ
+i = 0
+0
+i = i + 1
+1
+i += 1 #идиома
+2
+
+i = 0
+0
+x, y = 1, 2
+[1, 2]
+x
+1
+y
+2
+
+x, y = y, x #идиома
+
+array = [1, 2, 3]
+a = array[0]
+1
+b = array[1]
+2
+a, b, c = array #идиома - множественное присваивание
+||= # оператор или присвоить, если в значении переменной нет
+#запись дефолтного значения
+class Foo
+  def bar(key)
+    h = {a: 1, b: 2}
+    value = hash(key)
+    value ||= 0 #value = 0 unless value
+    # ... используем value
+    #
+  end
+
+  def long_method
+    sleep(3)
+  end
+
+  def memoization
+    @m ||= long_method # мемоизация memory find
+  end
+ end
+  foo = Foo.new
+  foo.bar(:a)
+  1
+  foo.bar(:c)
+  0
+  foo.long_method
+  3
+  foo.memoization
+  3
+
+  class User
+    attr_accesor :name
+
+    def has_name? # метод? возвращает тру фолс
+      !!name # двойное отрицание
+      # name.nil? ? false : true - возвращает труфолс
+      # name - возвращает имя либо нил
+      # !name -
+    end
+
+    def has_not_name?
+      !has_name?
+    end
+
+    def name=(value)
+      @name = value.capitalize
+    end
+  end
+
+name = "qwerty"
+"qwerty"
+!name
+false
+name = nil
+!name
+true
+  user = User.new
+  user.has_name?
+  false
+  user.name = 'dmitry'
+  'Dmitry'
+  user.has_name?
+  true
+
+
+  #синтаксис # записи массивов + с помощью создания блоков
+fruits = %w(apple orange grape)
+  ['apple', 'orange', 'grape']
+  fruits.map { |f| f.upcase }
+  ['APPLE', 'ORANGE', 'GRAPE']
+  fruits.map(&:upcase) #возвращает новый массив
+  ['APPLE', 'ORANGE', 'GRAPE']
+  fruits.each(&:upcase) #возвращает оригинальный массив
+  ['apple', 'orange', 'grape']
+
+#использование хэша вместо оператора кэйс?
+class Color
+  COLORS = { red: "#f00",green: "#0f0", blue: "#00f", white: "fff"}
+end
+  def code(name)
+    @code = COLORS[name] || "#000"
+     # @code = case name
+    #           when :red
+    #             "#f00"
+    #           when :green
+    #             "#0f0"
+    #           when :blue
+    #             "#00f"
+    #           when :white
+    #             "fff"
+    #           else
+    #             "#000"
+    #           end
+  end
+
+  alias_method :by_name, :code # элиасы методов - синонимы
+end
+# метод должен быть менее 10 строк
+color = Color.new
+  color.code(:nothing)
+  "#000"
+
+   def m(hash)
+   end
+m({a: 1, b: 2})
+   nil
+   m(a: 1, b: 2)
+def m(arg1, hash)
+end
+   nil
+   m(3, a: 1, b: 2)
+
+class Train
+  attr_accessors :type, :model, :number, :number_of_wagons
+
+  def initialize(number, *args) #массив
+#    def initialize(number, type = "Unknown", model = "Unknown", number_of_wagons = 0 )
+
+    @number = number
+      @type = args[0] || "Unknown"
+      @model = args[1] || "Unknown"
+      @number_of_wagons = args[2] || 0
+    # @type = type
+    # @model = model
+    # @number_of_wagons = number_of_wagons
+  end
+
+  t = Train.new('123')
+  t = Train.new('123', 'cargo')
+
+  def initialize(number, options = {}) #хэш
+
+    @number = number
+    @type = options[:type] || "Unknown"
+    @model = options[:model] || "Unknown"
+    @number_of_wagons = options[:number_of_wagons] || 0
+# @type = type
+# @model = model
+# @number_of_wagons = number_of_wagons
+  end
+
+  t = Train.new('123')
+  t = Train.new('123', type: 'cargo')
+  t = Train.new('123', number_of_wagons: 5, type: 'cargo')
+
+  # в руби все классы являются открытыми
+
+  class String
+    def self.random(length)
+      rand(36**length).to_s(36)
+    end
+
+      def my_method
+        self.capitalize
+      end
+
+    def <<(value)
+      "#{self} #{value}"
+    end
+  end
+
+  "str".class
+  "str".my_method
+  "str"
+  "str" << "abc"
+"str abc"
+  String.random(3)
+ "ol6"
+
+  #синглтон метод - возможность добавить некоторый метод к одному объекту
+
+  class Foo
+  end
+  foo = Foo.new
+  foo.m
+
+  class << foo
+    def m
+      puts "Only for one object"
+    end
+  end
+
+  foo.m
+Only for one object
 
 
 
 
 
--------------------------------------------------------------
+
+
+
+  -------------------------------------------------------------
 ВОПРОСЫ!!!!!!!!!!!!!
 про неработающий мик: надо гуглить именно эту модель ноутбука
 

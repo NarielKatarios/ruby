@@ -5,21 +5,21 @@ class Route
 
   NUMBER_FORMAT = /\d{3}/
 
-  @@routes = []
+  @routes = []
   def self.find(number)
-    @@routes.select{ |route| route.number == number }.first
+    @routes.select { |route| route.number == number }.first
   end
 
   def self.all
-    @@routes
+    @routes
   end
 
   def initialize(number)
     @number = number
     @stations = []
-    @@instances = register_instance
+    @instances = register_instance
     validate!
-    @@routes << self
+    @routes << self
   end
 
   def stations_list
@@ -31,22 +31,22 @@ class Route
   end
 
   def add_station(station)
-    raise "This station is not Railway Station" if station.class != RailwayStation
+    raise 'This station is not Railway Station' if station.class != RailwayStation
     @stations << station
   end
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
 
   protected
 
   def validate!
-    raise "Number can`t be nil" if @number.nil?
-    raise "Number should be at least 3 symbols" if @number.length < 3
-    raise "Number has invalid format" if @number !~ NUMBER_FORMAT
+    raise 'Number can`t be nil' if @number.nil?
+    raise 'Number should be at least 3 symbols' if @number.length < 3
+    raise 'Number has invalid format' if @number !~ NUMBER_FORMAT
     true
   end
 end

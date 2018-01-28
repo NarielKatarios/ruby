@@ -1,0 +1,27 @@
+Style/AsciiComments:
+  Exclude:
+    - '02/month.rb'
+    - '03/car.rb'
+    - '03/train.rb'
+    - '04/main.rb'
+
+Style/Documentation:
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+    - '03/car.rb'
+    - '03/train.rb'
+    - '04/module_company.rb'
+    - '04/module_instance_counter.rb'
+    - '04/routes.rb'
+    - '04/sport_car2.rb'
+    - '04/stations.rb'
+    - '04/trains.rb'
+    - '04/truck2.rb'
+    - '04/wagons.rb'
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/AbcSize:
+  Max: 18

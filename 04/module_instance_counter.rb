@@ -5,18 +5,17 @@ module InstanceCounter
   end
 
   module ClassMethods
-    @@instances = 0
+    @instances = 0
     def instances
-      @@instances
+      @instances
     end
 
     def instances=(inst)
-      @@instances=inst
+      @instances = inst
     end
   end
 
   module InstanceMethods
-
     private
 
     def register_instance
