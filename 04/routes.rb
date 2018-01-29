@@ -2,6 +2,9 @@ class Route
   attr_reader :number
   attr_accessor :stations
   include InstanceCounter
+  include Metaprogram
+  include Validation
+
 
   NUMBER_FORMAT = /\d{3}/
 

@@ -1,3 +1,22 @@
+Всем прочитать:
+1 - ПЕРЕМЕННЫЕ
+- https://ru.wikibooks.org/wiki/Ruby/%D0%9F%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5
+2 - ТИПЫ ДАННЫХ
+- https://ru.wikibooks.org/wiki/Ruby/%D0%91%D0%B0%D0%B7%D0%BE%D0%B2%D1%8B%D0%B5_%D1%82%D0%B8%D0%BF%D1%8B_%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85
+3 - ЧИСЛА
+- https://ru.wikibooks.org/wiki/Ruby/%D0%9F%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%B5%D0%B5_%D0%BE_%D1%87%D0%B8%D1%81%D0%BB%D0%B0%D1%85
+
+когда закрепите предыдущие три статьи
+4 - МАССИВЫ
+- https://ru.wikibooks.org/wiki/Ruby/%D0%9F%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%B5%D0%B5_%D0%BE_%D0%BC%D0%B0%D1%81%D1%81%D0%B8%D0%B2%D0%B0%D1%85
+5 - ХЭШИ
+- https://ru.wikibooks.org/wiki/Ruby/%D0%9F%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%B5%D0%B5_%D0%BE%D0%B1_%D0%B0%D1%81%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D1%8B%D1%85_%D0%BC%D0%B0%D1%81%D1%81%D0%B8%D0%B2%D0%B0%D1%85
+6 - СТРОКИ
+- https://ru.wikibooks.org/wiki/Ruby/%D0%9F%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%B5%D0%B5_%D0%BE_%D1%81%D1%82%D1%80%D0%BE%D0%BA%D0%B0%D1%85
+
+----------------------------------------------
+
+
 !!!!!!!!!!!!!!!терминал
 narielkatarios@NarielKatarios-Lenovo-V110-15ISK:~$
 ls - показывает все папки
@@ -18,7 +37,7 @@ sudo apt-get install bundler mc fish
 выполни в терминале в своей папке
 cd ruby
 git add .
-    git commit -m 'задание 6'
+    git commit -m 'lesson 8'
 git push
 (или git push origin master если не получится)
 ПЕРВОЕ ПОЛУЧИЛОСЬ
@@ -492,6 +511,310 @@ class Train
 
   foo.m
 Only for one object
+---------------------------------------------------------------
+МЕТАПРОГРАММИРОВАНИЕ
+        1.class
+Fixnum
+        1.public_methods
+# все методы с целым числом списком
+        x=0
+0
+        puts "#{x +=}"
+1
+        x
+1
+        puts "#{x +=}"
+2
+        eval('x += 1 ')
+3
+        x
+3
+        eval(' def m(a)
+        a * 10
+        end
+        puts m(5)')
+50
+
+
+
+
+
+--------
+line_num = 0
+input = ""
+
+loop do
+    print "#{line_num += 1}?: "
+    line = gets
+    break if line.strip == 'exit'   # стрип удаляет пустые пробелы в начале и конце строки
+
+    if line.strip == ''
+        puts "Evaluating..."
+        puts eval(input)
+        input = ""
+    else
+        input += line
+end
+--------
+        2+3
+5
+        puts "Hello world"
+Hello world
+        def m; puts "m"; end
+
+        m
+m
+        a = 2
+2
+        a + 3
+цикл чтение исполнение печать
+---------
+    def m(a)
+        a * 10
+    end
+Evaluation...
+
+Evaluation...
+60
+    [1, 2, 3, 4].each do |i|
+        puts i * 10
+    end
+
+Evaluation...
+
+10
+20
+30
+40
+1
+2
+3
+4
+    a = 0
+    a *= 10
+    puts a
+Evaluation...
+0
+------------
+    obj = Object.new
+    obj.instance_eval("def m
+    puts 'hello'
+    end")
+
+    obj.m
+hello
+----------------
+class Foo
+    def initialize
+        @bar = "instance var"
+    end
+
+    private
+
+    def private_method
+        puts "I'm private method"
+    end
+end
+------
+    foo = Foo.new
+    foo.instance_eval('@bar')
+"instance var"
+    foo.instance_eval('private_method')
+I'm private method
+    foo.instance_eval do
+        def m
+        puts "public method"
+        puts "instance var: #{@bar}"
+        private_method
+        end
+    end
+    foo.m
+public method
+instance var: instance var
+I'm private method
+----------
+    module X
+        end
+
+    class Y
+        @@y = 12
+        include X
+    end
+Y
+    Y.class_eval('@@y')
+12
+    Y.class_eval do
+        def m
+        puts 'hello'
+        end
+    end
+
+     y = Y.new
+     y.m
+hello
+    X.module_eval do
+        def module_method
+        puts 'module method'
+        end
+    end
+
+     y.module_method
+module_method
+
+    class Y
+        class_eval do
+            def another_method
+            puts '123'
+            end
+        end
+    end
+
+    y.another method
+123
+
+    Y.class_variables # все переменные класса
+[:@@y]
+    Y.class_variable_get :@@y   #вызвать значение переменной КЛАССА
+12
+    Y.class_variable_set :@@y, 45   #установить значение переменной
+45
+    Y.class_variable_get :@@y
+45
+    Y.class_variable_set :@@x, 34   #ввести новую переменную
+34
+    Y.class_variables
+[:@@y, :@@x]
+
+    y = Y.new
+    y.instance_variable_get :@x     #инстанс переменная
+    y.instance_variable_set :@x, 56
+56
+    y.instance_variable_get :@x
+56
+    y.instance_variables
+[:@x]
+    y2 = Y.new
+    y2.instance_variable_get :@x
+nil
+    y2.instance_variables
+------
+МЕТОД ДИНАМИЧЕСКОГО ОБЪЯВЛЕНИЯ МЕТОДА
+приватный метод, который создает другие методы
+
+    class Y
+        define_method(:my_method) do
+            puts "my method"
+        end
+    end
+
+    y = Y.new
+    y.my_method)
+my method
+    Y.const_set :MY, 5
+5
+    Y.const_Get :MY
+5
+ ----------------
+module MyAttrAccessor
+    def my_attr_accessor(*name) #массив элементов
+        name.each do |name|
+            var_name = "@#{name}".to_sym
+            define_method(name) { instance_variable_get(var_name) }
+            define_method("#{name}=".to_sym) { |value| instance_variable_set(var_name, value)}
+        end
+    end
+end
+
+class Test
+    extend MyAttrAccessor
+
+    my_attr_accessor :my_attr, :a, :b, :c
+end
+-------------------
+    test v= Test.new
+    test.instance_variables
+[]
+    test.my_attr
+nil
+    test.my_attr = 5
+5
+    test.my_attr
+5
+    test.instance_variables
+[:@my_attr]
+    test
+----------------------
+puts "Enter string"
+str = gets.chomp
+puts "Enter method"
+method = gets.chomp.to_sym #метод преобразовывается в символ!!
+puts str.send(method) #выводим значение
+---------
+Enter string
+qwerty
+Enter method
+lenght
+6
+
+Enter string
+abc
+Enter method
+raise
+unhandled exception
+------
+    "str".send(:raise, ArgumentError)
+ArgumentError:ArgumentError
+    2.send(:+, 5)
+7
+
+метод удаления метода
+    "abc".reverse
+"cba"
+    class String
+        remove_method :reverse
+    end
+String
+    "abc".reverse
+undefined method
+----------------
+class X
+    def m
+        puts "hello"
+    end
+    def method_missing(name, *args)
+        puts "Called method #{name} with arguments #{args}"
+        end
+    end
+nil
+    x = X.new
+    x.m
+hello
+    x.abc
+Called method abc with arguments []
+    x.my_method[1, 2, 3]
+
+    class X
+        def method_missing(name, *args)
+            self.class.send(:define_method, name.to_sym, lambda { |*args| puts args.inspect })
+        end
+    end
+
+    x = X.new
+    x.public_methods
+    x.abc 1,2,3
+    x.xyz
+    x.public_methods
+    x.abc
+[1, 2, 3]
+
+
+
+
+
+
+
+
+
 
 
 

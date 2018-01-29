@@ -1,6 +1,9 @@
 class Wagon
   include Company
   include InstanceCounter
+  include Metaprogram
+  include Validation
+
 
   attr_reader :type
 

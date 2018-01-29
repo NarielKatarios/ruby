@@ -1,11 +1,18 @@
 class Train
   include Company
   include InstanceCounter
+  include Metaprogram
+  include Validation
+
 
   attr_accessor :wagons, :speed, :route, :station
   attr_reader :name, :type
 
   NAME_FORMAT = /^[\w]{3}-*[\w]{2}$/i
+
+  validate :number, :size, 3
+  validate :type, :eq, %w[passenger cargo]
+  attr_accessor_with_history :speed
 
   @trains = []
   def self.find(name)

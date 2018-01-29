@@ -2,6 +2,8 @@ class RailwayStation
   attr_reader :name
   attr_accessor :trains
   include InstanceCounter
+  include Metaprogram
+  include Validation
 
   @stations = []
   def self.all
